@@ -1,0 +1,2 @@
+BadBM/LibraryTest.java
+ BadBM.LibraryTest
