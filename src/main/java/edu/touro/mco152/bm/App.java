@@ -5,9 +5,8 @@ import edu.touro.mco152.bm.ui.Gui;
 import edu.touro.mco152.bm.ui.MainFrame;
 import edu.touro.mco152.bm.ui.SelectFrame;
 
-import javax.swing.SwingWorker.StateValue;
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.SwingWorker.StateValue;
 import java.beans.PropertyChangeEvent;
 import java.io.*;
 import java.util.Properties;
@@ -44,7 +43,7 @@ public class App {
     public static int numOfMarks = 25;      // desired number of marks
     public static int numOfBlocks = 32;     // desired number of blocks
     public static int blockSizeKb = 512;    // size of a block in KBs
-    public static DiskWorker worker = null;
+    public static SwingGUI worker;
     public static int nextMarkNumber = 1;   // number of the next mark
     public static double wMax = -1, wMin = -1, wAvg = -1;
     public static double rMax = -1, rMin = -1, rAvg = -1;
@@ -56,7 +55,7 @@ public class App {
 
         /* Set the Nimbus look and feel */
         try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -225,14 +224,14 @@ public class App {
             msg("worker is null abort...");
             return;
         }
-        worker.cancel(true);
+        worker.doCancel(true);
     }
 
     public static void startBenchmark() {
 
         //1. check that there isn't already a worker in progress
         if (state == State.DISK_TEST_STATE) {
-            //if (!worker.isCancelled() && !worker.isDone()) {
+            //if (!worker.isIsCancelled() && !worker.isDone()) {
             msg("Test in progress, aborting...");
             return;
             //}
@@ -266,8 +265,8 @@ public class App {
         }
 
         //7. start disk worker thread
-        worker = new DiskWorker();
-        worker.addPropertyChangeListener((final PropertyChangeEvent event) -> {
+        worker = new SwingGUI();
+        worker.addPropertyListener((final PropertyChangeEvent event) -> {
             switch (event.getPropertyName()) {
                 case "progress":
                     int value = (Integer) event.getNewValue();
@@ -286,7 +285,7 @@ public class App {
                     break;
             }
         });
-        worker.execute();
+        worker.queueExecute();
     }
 
     public static long targetMarkSizeKb() {
