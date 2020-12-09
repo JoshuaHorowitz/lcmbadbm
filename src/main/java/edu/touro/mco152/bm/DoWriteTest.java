@@ -15,11 +15,14 @@ import java.util.logging.Logger;
 import static edu.touro.mco152.bm.App.*;
 import static edu.touro.mco152.bm.DiskMark.MarkType.WRITE;
 
-public class DoWriteTest extends DoTest {
+public class DoWriteTest implements TestCommand {
+    GUI gui;
+    public DoWriteTest(GUI g) {
+        gui = g;
+    }
 
-
-
-    public void doWrite(GUI gui) {
+    @Override
+    public void execute() {
         // declare local vars formerly in DiskWorker
 
         int wUnitsComplete = 0,

@@ -16,10 +16,15 @@ import java.util.logging.Logger;
 import static edu.touro.mco152.bm.App.*;
 import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
 
-public class DoReadTest extends DoTest {
+public class DoReadTest implements TestCommand {
+    GUI gui;
 
+    public DoReadTest(GUI g) {
+        gui = g;
+    }
 
-    public void doRead(GUI gui) throws IOException {
+    @Override
+    public void execute() throws IOException {
         // declare local vars formerly in DiskWorker
         int wUnitsComplete = 0,
                 rUnitsComplete = 0,

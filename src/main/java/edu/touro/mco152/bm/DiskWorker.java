@@ -5,8 +5,6 @@ import edu.touro.mco152.bm.ui.Gui;
 import javax.swing.*;
 
 import static edu.touro.mco152.bm.App.*;
-import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
-import static edu.touro.mco152.bm.DiskMark.MarkType.WRITE;
 
 /**
  * Run the disk benchmarking as a Swing-compliant thread (only one of these threads can run at
@@ -76,8 +74,8 @@ public class DiskWorker {
          * The GUI allows either a write, read, or both types of BMs to be started. They are done serially.
          */
         if (writeTest) {
-            DoWriteTest dwt = new DoWriteTest();
-            dwt.doWrite(gui);
+            DoWriteTest dwt = new DoWriteTest(new SwingGUI());
+            dwt.execute();
         }
 
         /**
@@ -99,8 +97,8 @@ public class DiskWorker {
 
         // Same as above, just for Read operations instead of Writes.
         if (readTest) {
-            DoReadTest drt = new DoReadTest();
-            drt.doRead(gui);
+            DoReadTest drt = new DoReadTest(new SwingGUI());
+            drt.execute();
         }
         nextMarkNumber += numOfMarks;
         return true;
