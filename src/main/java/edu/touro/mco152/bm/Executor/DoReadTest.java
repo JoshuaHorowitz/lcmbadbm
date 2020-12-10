@@ -17,6 +17,10 @@ import java.util.logging.Logger;
 import static edu.touro.mco152.bm.App.*;
 import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
 
+
+/**
+ * Executor command for read benchmark test. Takes parameters for proper benchmark, then performs an execution for the read results
+ */
 public class DoReadTest implements TestCommand {
     GUI gui;
     public DiskRun.BlockSequence blockSequence;

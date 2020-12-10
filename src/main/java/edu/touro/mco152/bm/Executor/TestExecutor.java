@@ -3,6 +3,11 @@ package edu.touro.mco152.bm.Executor;
 import java.io.IOException;
 import java.util.List;
 
+
+/**
+ * The superclass of other executors for read/write benchmarks.
+ * Implements @TestCommand for an execute method
+ */
 public class TestExecutor implements TestCommand {
     TestCommand c;
 
