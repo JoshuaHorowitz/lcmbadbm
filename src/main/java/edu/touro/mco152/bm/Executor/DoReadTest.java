@@ -1,5 +1,6 @@
-package edu.touro.mco152.bm;
+package edu.touro.mco152.bm.Executor;
 
+import edu.touro.mco152.bm.*;
 import edu.touro.mco152.bm.persist.DiskRun;
 import edu.touro.mco152.bm.persist.EM;
 import edu.touro.mco152.bm.ui.Gui;
@@ -18,13 +19,22 @@ import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
 
 public class DoReadTest implements TestCommand {
     GUI gui;
+    public DiskRun.BlockSequence blockSequence;
+    public int numOfMarks;
+    public int numOfBlocks;
+    public int blockSizeKb;
 
-    public DoReadTest(GUI g) {
-        gui = g;
+    public DoReadTest(SwingGUI swingGUI, DiskRun.BlockSequence bs, int nom, int nob, int bskb)
+    {
+        gui = swingGUI;
+        blockSequence = bs;
+        numOfMarks = nom;
+        numOfBlocks = nob;
+        blockSizeKb = bskb;
     }
 
     @Override
-    public void execute() throws IOException {
+    public int execute() {
         // declare local vars formerly in DiskWorker
         int wUnitsComplete = 0,
                 rUnitsComplete = 0,
@@ -70,27 +80,25 @@ public class DoReadTest implements TestCommand {
             long startTime = System.nanoTime();
             long totalBytesReadInMark = 0;
 
-            try {
-                try (RandomAccessFile rAccFile = new RandomAccessFile(testFile, "r")) {
-                    for (int b = 0; b < numOfBlocks; b++) {
-                        if (blockSequence == DiskRun.BlockSequence.RANDOM) {
-                            int rLoc = Util.randInt(0, numOfBlocks - 1);
-                            rAccFile.seek(rLoc * blockSize);
-                        } else {
-                            rAccFile.seek(b * blockSize);
+                    try (RandomAccessFile rAccFile = new RandomAccessFile(testFile, "r")) {
+                        for (int b = 0; b < numOfBlocks; b++) {
+                            if (blockSequence == DiskRun.BlockSequence.RANDOM) {
+                                int rLoc = Util.randInt(0, numOfBlocks - 1);
+                                rAccFile.seek(rLoc * blockSize);
+                            } else {
+                                rAccFile.seek(b * blockSize);
+                            }
+                            rAccFile.readFully(blockArr, 0, blockSize);
+                            totalBytesReadInMark += blockSize;
+                            rUnitsComplete++;
+                            unitsComplete = rUnitsComplete + wUnitsComplete;
+                            percentComplete = (float) unitsComplete / (float) unitsTotal * 100f;
+                            gui.setTheProgress((int) percentComplete);
                         }
-                        rAccFile.readFully(blockArr, 0, blockSize);
-                        totalBytesReadInMark += blockSize;
-                        rUnitsComplete++;
-                        unitsComplete = rUnitsComplete + wUnitsComplete;
-                        percentComplete = (float) unitsComplete / (float) unitsTotal * 100f;
-                        gui.setTheProgress((int) percentComplete);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            long endTime = System.nanoTime();
+                    long endTime = System.nanoTime();
             long elapsedTimeNs = endTime - startTime;
             double sec = (double) elapsedTimeNs / (double) 1000000000;
             double mbRead = (double) totalBytesReadInMark / (double) MEGABYTE;
@@ -112,5 +120,8 @@ public class DoReadTest implements TestCommand {
                 em.getTransaction().commit();
 
                 Gui.runPanel.addRun(run);
+
+                //Return int to test executor
+                return rUnitsComplete;
     }
 }

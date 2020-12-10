@@ -1,5 +1,9 @@
-package edu.touro.mco152.bm;
+package edu.touro.mco152.bm.Executor;
 
+import edu.touro.mco152.bm.App;
+import edu.touro.mco152.bm.DiskMark;
+import edu.touro.mco152.bm.GUI;
+import edu.touro.mco152.bm.Util;
 import edu.touro.mco152.bm.persist.DiskRun;
 import edu.touro.mco152.bm.persist.EM;
 import edu.touro.mco152.bm.ui.Gui;
@@ -17,12 +21,22 @@ import static edu.touro.mco152.bm.DiskMark.MarkType.WRITE;
 
 public class DoWriteTest implements TestCommand {
     GUI gui;
-    public DoWriteTest(GUI g) {
+    public DiskRun.BlockSequence blockSequence;
+    public int numOfMarks;
+    public int numOfBlocks;
+    public int blockSizeKb;
+
+    public DoWriteTest(GUI g, DiskRun.BlockSequence bs, int nom, int nob, int bskb)
+    {
         gui = g;
+        blockSequence = bs;
+        numOfMarks = nom;
+        numOfBlocks = nob;
+        blockSizeKb = bskb;
     }
 
     @Override
-    public void execute() {
+    public int execute() {
         // declare local vars formerly in DiskWorker
 
         int wUnitsComplete = 0,
@@ -144,6 +158,9 @@ public class DoWriteTest implements TestCommand {
         em.getTransaction().commit();
 
         Gui.runPanel.addRun(run);
+
+        //Return int for executor test
+        return rUnitsComplete;
     }
 
 }

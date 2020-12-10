@@ -1,6 +1,9 @@
 package edu.touro.mco152.bm;
 
 
+import edu.touro.mco152.bm.Executor.DoReadTest;
+import edu.touro.mco152.bm.Executor.DoWriteTest;
+import edu.touro.mco152.bm.Executor.TestExecutor;
 import edu.touro.mco152.bm.ui.Gui;
 import javax.swing.*;
 
@@ -59,8 +62,6 @@ public class DiskWorker {
             }
         }
 
-        DiskMark wMark, rMark;  // declare vars that will point to objects used to pass progress to UI
-
         Gui.updateLegend();  // init chart legend info
 
         if (autoReset) {
@@ -74,8 +75,9 @@ public class DiskWorker {
          * The GUI allows either a write, read, or both types of BMs to be started. They are done serially.
          */
         if (writeTest) {
-            DoWriteTest dwt = new DoWriteTest(new SwingGUI());
-            dwt.execute();
+            DoWriteTest dwt = new DoWriteTest(new SwingGUI(), blockSequence, numOfMarks, numOfBlocks, blockSizeKb);
+            TestExecutor testExecutor = new TestExecutor(dwt);
+            testExecutor.execute();
         }
 
         /**
@@ -97,8 +99,9 @@ public class DiskWorker {
 
         // Same as above, just for Read operations instead of Writes.
         if (readTest) {
-            DoReadTest drt = new DoReadTest(new SwingGUI());
-            drt.execute();
+            DoReadTest drt = new DoReadTest(new SwingGUI(), blockSequence, numOfMarks, numOfBlocks, blockSizeKb);
+            TestExecutor testExecutor = new TestExecutor(drt);
+            testExecutor.execute();
         }
         nextMarkNumber += numOfMarks;
         return true;
