@@ -1,4 +1,4 @@
-package edu.touro.mco152.bm.Executor;
+package edu.touro.mco152.bm.Commands;
 
 import java.io.IOException;
 

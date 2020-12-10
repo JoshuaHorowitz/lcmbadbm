@@ -1,9 +1,9 @@
 package edu.touro.mco152.bm;
 
 
-import edu.touro.mco152.bm.Executor.DoReadTest;
-import edu.touro.mco152.bm.Executor.DoWriteTest;
-import edu.touro.mco152.bm.Executor.TestExecutor;
+import edu.touro.mco152.bm.Commands.DoReadTest;
+import edu.touro.mco152.bm.Commands.DoWriteTest;
+import edu.touro.mco152.bm.Commands.TestExecutor;
 import edu.touro.mco152.bm.ui.Gui;
 import javax.swing.*;
 

@@ -1,19 +1,18 @@
 package edu.touro.mco152.bm.Executor;
 
 import edu.touro.mco152.bm.App;
+import edu.touro.mco152.bm.Commands.DoReadTest;
+import edu.touro.mco152.bm.Commands.TestExecutor;
 import edu.touro.mco152.bm.SwingGUI;
 import edu.touro.mco152.bm.persist.DiskRun;
 import edu.touro.mco152.bm.ui.Gui;
 import edu.touro.mco152.bm.ui.MainFrame;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Properties;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ExecutorTests {
 

@@ -1,4 +1,4 @@
-package edu.touro.mco152.bm.Executor;
+package edu.touro.mco152.bm.Commands;
 
 import edu.touro.mco152.bm.*;
 import edu.touro.mco152.bm.persist.DiskRun;
@@ -7,12 +7,9 @@ import edu.touro.mco152.bm.ui.Gui;
 
 import javax.persistence.EntityManager;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static edu.touro.mco152.bm.App.*;
 import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
